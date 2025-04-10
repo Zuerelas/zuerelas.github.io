@@ -16,6 +16,7 @@ main {
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 #navlogo:hover {
+  cursor: pointer;
   transform: scale(1.2);
   filter: drop-shadow(6px 8px 10px rgba(0, 0, 0, 0.8));
 }
@@ -56,9 +57,19 @@ nav > ul > li, nav > div > p {
 nav > ul > li:hover, nav > div > p:hover {
   color: #da0606;
 }
+body, html {
+  height: 100%;
+}
 
-nav > ul {
-  color: #ffffff;
+main {
+  height: 100vh;
+}
+main > div {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  margin: 0 auto;
 }
