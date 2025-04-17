@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Navigation from './nav.jsx'
 import MainText from './mainSection.jsx'
+import About from './about.jsx'
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Navigation id="navigation"></Navigation>
       <main>
         <MainText></MainText>
+        <About></About>
       </main>
     </>
   )

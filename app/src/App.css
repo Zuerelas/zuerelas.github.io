@@ -62,14 +62,21 @@ body, html {
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#maintext {
   height: 100vh;
 }
+
 main > div {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
   text-align: center;
   margin: 0 auto;
 }
@@ -78,6 +85,13 @@ h2 {
   font-weight: 400;
   font-size: 2em;
   color: #9f0f0f;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+p {
+  font-size: 30px;
+  color: #b31e1e;
   margin-bottom: 20px;
   margin-top: 20px;
 }
@@ -107,11 +121,9 @@ main > div, h2{
 
 .enable {
   opacity: 1;
-  animation-delay: 0.5s;
 }
 
 .disable {
   display: none;
   opacity: 0;
-  animation-delay: 0.7s;
 }
