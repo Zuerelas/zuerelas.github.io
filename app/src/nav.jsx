@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import './App.css'
 
+// function for showing the navigation bar only on scrolling down
+
 function Navigation() {
-    return <nav>
+    return <nav class="disable">
         <div id="navlogoli">
             <img src="./src/assets/delta.png" alt="Home" id="navlogo" />
             <p>Delta Developing</p>

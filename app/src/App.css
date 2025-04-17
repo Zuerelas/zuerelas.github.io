@@ -28,7 +28,7 @@ main {
 
 nav {
   display: grid;
-  grid-template-columns: 2fr 3fr;
+  grid-template-columns: 3fr 2fr;
   background-color: #7a24245a;
   padding: 10px 20px;
   position: fixed;
@@ -72,4 +72,46 @@ main > div {
   height: 100vh;
   text-align: center;
   margin: 0 auto;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 2em;
+  color: #9f0f0f;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply fade-in effect to various elements */
+main > div, h2{
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Additional class for custom fade-in timing */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.enable {
+  opacity: 1;
+  animation-delay: 0.5s;
+}
+
+.disable {
+  display: none;
+  opacity: 0;
+  animation-delay: 0.7s;
 }
