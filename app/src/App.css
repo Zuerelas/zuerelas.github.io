@@ -26,6 +26,12 @@ main {
   align-items: center;
 }
 
+#navigation {
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+}
+
 nav {
   display: grid;
   grid-template-columns: 3fr 2fr;
@@ -124,6 +130,26 @@ main > div, h2{
 }
 
 .disable {
+  height: 0;
   display: none;
   opacity: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+  color: #b20505;
+  border-radius: 20px;
+  background-color: #7a24245a;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  width: 80%;
+  max-width: 800px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

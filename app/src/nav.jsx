@@ -17,8 +17,6 @@ function showNav() {
 // Register scroll event listener to show/hide navigation
 window.addEventListener('scroll', showNav);
 
-// Initialize navigation state on page load
-document.addEventListener('DOMContentLoaded', showNav);
 function Navigation() {
     return <nav class="disable navigation fade-in" id="navigation">
         <div id="navlogoli">

@@ -7,11 +7,11 @@ import About from './about.jsx'
 function App() {
   return (
     <>
-      <Navigation id="navigation"></Navigation>
       <main>
         <MainText></MainText>
         <About></About>
       </main>
+      <Navigation id="navigation"></Navigation>
     </>
   )
 }
