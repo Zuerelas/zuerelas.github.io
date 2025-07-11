@@ -1,35 +1,51 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Home, User, Briefcase, Mail } from 'lucide-react'
 import './App.css'
 
-// function for showing the navigation bar only on scrolling down
-function showNav() {
-    const nav = document.getElementById("navigation")
+function Navigation({ activeSection, setActiveSection }) {
+  const [isScrolled, setIsScrolled] = useState(false)
 
-    if (window.scrollY > 0) {
-        nav.classList.remove("disable")
-        nav.classList.add("enable")
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
     }
-    else {
-        nav.classList.add("disable")
-        nav.classList.remove("enable")
-    }
-}
-// Register scroll event listener to show/hide navigation
-window.addEventListener('scroll', showNav);
 
-function Navigation() {
-    return <nav class="disable navigation fade-in" id="navigation">
-        <div id="navlogoli">
-            <img src="./src/assets/delta.png" alt="Home" id="navlogo" />
-            <p>Delta Developing</p>
-        </div>
-        <ul>
-            <li>Home</li>
-            <li>About Me</li>
-            <li>Projects</li>
-            <li>Contact</li>
-        </ul>
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const navItems = [
+    { id: 'home', label: 'Home', icon: Home },
+    { id: 'about', label: 'About Me', icon: User },
+    { id: 'projects', label: 'Projects', icon: Briefcase },
+    { id: 'contact', label: 'Contact', icon: Mail }
+  ]
+
+  return (
+    <nav className={`navigation ${isScrolled ? 'scrolled' : ''}`} id="navigation">
+      <div id="navlogoli" onClick={() => setActiveSection('home')}>
+        <img src="./src/assets/delta.png" alt="Home" id="navlogo" />
+        <p className="brand-text">
+          <span className="text-gradient">Delta</span> Developing
+        </p>
+      </div>
+      <ul>
+        {navItems.map(item => {
+          const IconComponent = item.icon
+          return (
+            <li 
+              key={item.id}
+              className={`nav-item ${activeSection === item.id ? 'active' : ''}`}
+              onClick={() => setActiveSection(item.id)}
+            >
+              <IconComponent className="nav-icon" size={18} />
+              {item.label}
+            </li>
+          )
+        })}
+      </ul>
     </nav>
+  )
 }
 
 export default Navigation
