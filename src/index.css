@@ -57,7 +57,7 @@ body, html {
 
 nav {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 2fr 3fr;
   background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(26, 10, 10, 0.8) 100%);
   border-bottom: 1px solid var(--accent-color);
   padding: 15px 30px;
@@ -196,7 +196,7 @@ nav > ul > li:hover::after, nav > div > p:hover::after {
 .dynamic-text {
   color: var(--accent-color);
   font-weight: 600;
-  min-width: 200px;
+  min-width: 0px;
   text-align: left;
   display: inline-block;
 }
@@ -206,7 +206,7 @@ nav > ul > li:hover::after, nav > div > p:hover::after {
   animation: cursor-blink 1s infinite;
   font-weight: 100;
   display: inline-block;
-  margin-left: 2px;
+  margin-left: 0px;
   vertical-align: baseline;
 }
 
@@ -916,7 +916,7 @@ footer a:hover {
   .hero-subtitle {
     font-size: 1.5em;
     flex-direction: column;
-    gap: 5px;
+    gap: 0px;
   }
   
   .hero-buttons {
@@ -949,7 +949,7 @@ footer a:hover {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #2c4357;
     background-color: #ffffff;
   }
   a:hover {
