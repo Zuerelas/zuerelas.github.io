@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Home, User, Code, Mail, ExternalLink, Github, Linkedin } from 'lucide-react';
 import './App.css';
+import Logo from './assets/delta.png';
+import LogoWBG from './assets/deltawb.png';
 
 // Particle Network Component
 const ParticleNetwork = () => {
@@ -8,111 +10,93 @@ const ParticleNetwork = () => {
     const canvas = document.getElementById('particle-canvas');
     const ctx = canvas.getContext('2d');
 
-    // Aktuelle und Ziel-Mausposition
-    let currentMouseX = 0;
-    let currentMouseY = 0;
-    let targetMouseX = 0;
-    let targetMouseY = 0;
-
     let animationFrameId;
+    let time = 0;
 
     const resizeCanvas = () => {
-      // Canvas auf die volle Dokumenthöhe setzen
-      const documentHeight = Math.max(
-        document.body.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.clientHeight,
-        document.documentElement.scrollHeight,
-        document.documentElement.offsetHeight
-      );
-
       canvas.width = window.innerWidth;
-      canvas.height = documentHeight;
-      canvas.style.height = documentHeight + 'px';
+      canvas.height = document.body.scrollHeight;
     };
 
-    const handleMouseMove = (e) => {
-      // Ziel-Mausposition relativ zur Scroll-Position berechnen
-      targetMouseX = e.clientX;
-      targetMouseY = e.clientY + window.scrollY;
-    };
-
-    const lerp = (start, end, factor) => {
-      return start + (end - start) * factor;
-    };
-
-    const drawGrid = () => {
+    const drawWaveGrid = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Smooth interpolation für Following-Effekt
-      const followSpeed = 0.08; // Langsamere Geschwindigkeit für smootheres Following
-      currentMouseX = lerp(currentMouseX, targetMouseX, followSpeed);
-      currentMouseY = lerp(currentMouseY, targetMouseY, followSpeed);
+      const spacing = 50;
+      const dotSize = 3;
+      const lineWidth = 1;
 
-      const spacing = 40; // Abstand zwischen Punkten
-      const dotSize = 2;
-      const lightRadius = 150; // Leicht größerer Radius für besseren Effekt
+      // Wellen-Parameter
+      const waveAmplitude = 15; // Höhe der Wellen
+      const waveFrequency = 0.01; // Frequenz der Wellen
+      const waveSpeed = 0.005; // Geschwindigkeit der Animation
 
+      ctx.strokeStyle = `rgba(220, 38, 38, 0.15)`;
+      ctx.lineWidth = lineWidth;
+
+      // Horizontale gewellte Linien
+      for (let y = spacing; y < canvas.height; y += spacing) {
+        ctx.beginPath();
+        let firstPoint = true;
+
+        for (let x = spacing; x < canvas.width; x += spacing) {
+          const waveOffset = Math.sin((x + y) * waveFrequency + time * waveSpeed) * waveAmplitude;
+          const currentY = y + waveOffset;
+
+          if (firstPoint) {
+            ctx.moveTo(x, currentY);
+            firstPoint = false;
+          } else {
+            ctx.lineTo(x, currentY);
+          }
+        }
+        ctx.stroke();
+      }
+
+      // Vertikale gewellte Linien
+      for (let x = spacing; x < canvas.width; x += spacing) {
+        ctx.beginPath();
+        let firstPoint = true;
+
+        for (let y = spacing; y < canvas.height; y += spacing) {
+          const waveOffset = Math.sin((x + y) * waveFrequency + time * waveSpeed) * waveAmplitude;
+          const currentX = x + waveOffset * 0.5; // Weniger horizontale Bewegung
+
+          if (firstPoint) {
+            ctx.moveTo(currentX, y);
+            firstPoint = false;
+          } else {
+            ctx.lineTo(currentX, y);
+          }
+        }
+        ctx.stroke();
+      }
+
+      // Animierte Punkte an den gewellten Schnittpunkten
       for (let x = spacing; x < canvas.width; x += spacing) {
         for (let y = spacing; y < canvas.height; y += spacing) {
-          const dx = x - currentMouseX;
-          const dy = y - currentMouseY;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          // Licht-Effekt berechnen mit sanftem Übergang
-          let opacity = 0.2;
-          let size = dotSize;
-
-          if (distance < lightRadius) {
-            const effect = 1 - (distance / lightRadius);
-            // Smoothere Kurve für den Licht-Effekt
-            const smoothEffect = Math.pow(effect, 1.5);
-            opacity = 0.2 + (smoothEffect * 0.8);
-            size = dotSize + (smoothEffect * 4);
-          }
+          const waveOffsetX = Math.sin((x + y) * waveFrequency + time * waveSpeed) * waveAmplitude * 0.5;
+          const waveOffsetY = Math.sin((x + y) * waveFrequency + time * waveSpeed) * waveAmplitude;
 
           ctx.beginPath();
-          ctx.arc(x, y, size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(220, 38, 38, ${opacity})`;
+          ctx.arc(x + waveOffsetX, y + waveOffsetY, dotSize, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(220, 38, 38, 0.4)`;
           ctx.fill();
         }
       }
     };
 
     const animate = () => {
-      drawGrid();
+      time += 1; // Zeit für Animation erhöhen
+      drawWaveGrid();
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    const handleResize = () => {
-      resizeCanvas();
-    };
-
-    const handleScroll = () => {
-      // Bei Scroll die Zielposition entsprechend anpassen
-      targetMouseY = targetMouseY - window.scrollY + window.scrollY;
-    };
-
-    // Event Listeners
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll);
-
-    // Initiale Werte setzen
-    const rect = canvas.getBoundingClientRect();
-    currentMouseX = window.innerWidth / 2;
-    currentMouseY = window.innerHeight / 2;
-    targetMouseX = currentMouseX;
-    targetMouseY = currentMouseY;
-
-    // Initiale Größenanpassung mit kleiner Verzögerung
-    setTimeout(resizeCanvas, 100);
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
     animate();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -132,8 +116,8 @@ const Navigation = ({ activeSection, setActiveSection }) => {
       <nav className="glass-nav">
         <div className="nav-container">
           <div className="nav-brand">
-            <div className="brand-icon">E</div>
-            <span className="brand-text">Elias</span>
+            <img src={Logo} alt="Logo" className="brand-icon" />
+            <span className="brand-text">Delta-developing</span>
           </div>
 
           <ul className="nav-menu">
@@ -187,7 +171,7 @@ const HomeSection = () => {
           </div>
 
           <h1 className="hero-title">
-            Hi, I'm <span className="name-highlight">Elias</span>
+            Hi, I'm <span className="name-highlight">Delta</span>
           </h1>
 
           <div className="hero-subtitle">
@@ -214,11 +198,11 @@ const HomeSection = () => {
 
           <div className="hero-stats">
             <div className="stat-item">
-              <span className="stat-number">5+</span>
+              <span className="stat-number">3+</span>
               <span className="stat-label">Projects</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">2+</span>
+              <span className="stat-number">{new Date().getFullYear() - 2020}+</span>
               <span className="stat-label">Years</span>
             </div>
             <div className="stat-item">
@@ -233,13 +217,31 @@ const HomeSection = () => {
 
 // About Section
 const AboutSection = () => {
-  const skills = [
-    { name: 'React', level: 90, icon: '⚛️' },
-    { name: 'JavaScript', level: 85, icon: '🟨' },
-    { name: 'Python', level: 80, icon: '🐍' },
-    { name: 'CSS/Sass', level: 88, icon: '🎨' },
-    { name: 'Node.js', level: 75, icon: '🟢' },
-    { name: 'Git', level: 82, icon: '📚' }
+  const skillCategories = [
+    {
+      category: 'Operating Systems',
+      skills: [
+        { name: 'Linux', level: 98, icon: '🐧' },
+        { name: 'Windows', level: 92, icon: '🪟' },
+      ],
+    },
+    {
+      category: 'Web Development',
+      skills: [
+        { name: 'HTML5', level: 100, icon: '🌐' },
+        { name: 'CSS/SCSS', level: 88, icon: '🎨' },
+        { name: 'JavaScript', level: 85, icon: '🟨' },
+        { name: 'React', level: 95, icon: '⚛️' },
+        { name: 'Node.js', level: 75, icon: '🟢' },
+      ],
+    },
+    {
+      category: 'App Development',
+      skills: [
+        { name: 'C/C++', level: 95, icon: '💻' },
+        { name: 'Python', level: 80, icon: '🐍' },
+      ],
+    },
   ];
 
   return (
@@ -250,9 +252,9 @@ const AboutSection = () => {
           <div className="about-intro">
             <div className="profile-card glass-card">
               <div className="profile-avatar">
-                <User size={60} className="avatar-icon" />
+                <img src={Logo} alt="Delta Avatar" className="avatar-image" />
               </div>
-              <h3>Elias</h3>
+              <h3>Delta</h3>
               <p className="intro-text">
                 I'm a passionate developer who loves creating beautiful and functional web applications.
                 Always eager to learn new technologies and solve complex problems.
@@ -262,29 +264,34 @@ const AboutSection = () => {
 
           <div className="skills-section">
             <h3 className="subsection-title">Skills & Technologies</h3>
-            <div className="skills-grid">
-              {skills.map((skill, index) => (
-                  <div
-                      key={skill.name}
-                      className="skill-card glass-card"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <div className="skill-header">
-                      <span className="skill-icon">{skill.icon}</span>
-                      <h4 className="skill-name">{skill.name}</h4>
-                    </div>
-                    <div className="skill-progress">
-                      <div className="progress-bar">
+            {skillCategories.map((category, index) => (
+                <div key={index} className="skill-category">
+                  <h4 className="skill-category-title">{category.category}</h4>
+                  <div className="skills-grid">
+                    {category.skills.map((skill, skillIndex) => (
                         <div
-                            className="progress-fill"
-                            style={{ width: `${skill.level}%` }}
-                        ></div>
-                      </div>
-                      <span className="skill-percentage">{skill.level}%</span>
-                    </div>
+                            key={skill.name}
+                            className="skill-card glass-card"
+                            style={{ animationDelay: `${skillIndex * 0.1}s` }}
+                        >
+                          <div className="skill-header">
+                            <span className="skill-icon">{skill.icon}</span>
+                            <h4 className="skill-name">{skill.name}</h4>
+                          </div>
+                          <div className="skill-progress">
+                            <div className="progress-bar">
+                              <div
+                                  className="progress-fill"
+                                  style={{ width: `${skill.level}%` }}
+                              ></div>
+                            </div>
+                            <span className="skill-percentage">{skill.level}%</span>
+                          </div>
+                        </div>
+                    ))}
                   </div>
-              ))}
-            </div>
+                </div>
+            ))}
           </div>
         </div>
       </section>
@@ -392,7 +399,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2024 Elias. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Delta. All rights reserved.</p>
         </div>
       </footer>
   );
