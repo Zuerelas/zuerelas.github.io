@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Home, User, Code, Mail, ExternalLink, Github, Linkedin } from 'lucide-react';
 import './App.css';
 import Logo from './assets/delta.png';
-import LogoWBG from './assets/deltawb.png';
+// import LogoWBG from './assets/deltawb.png';
 
 // Particle Network Component
 const ParticleNetwork = () => {
@@ -185,17 +185,6 @@ const HomeSection = () => {
             I love building things that make a difference.
           </p>
 
-          <div className="hero-buttons">
-            <a href="#projects" className="btn primary-btn">
-              <Code size={20} />
-              View My Work
-            </a>
-            <a href="#about" className="btn secondary-btn">
-              <User size={20} />
-              About Me
-            </a>
-          </div>
-
           <div className="hero-stats">
             <div className="stat-item">
               <span className="stat-number">3+</span>
@@ -229,9 +218,10 @@ const AboutSection = () => {
       category: 'Web Development',
       skills: [
         { name: 'HTML5', level: 100, icon: '🌐' },
-        { name: 'CSS/SCSS', level: 88, icon: '🎨' },
+        { name: 'CSS/SCSS', level: 95, icon: '🎨' },
         { name: 'JavaScript', level: 85, icon: '🟨' },
         { name: 'React', level: 95, icon: '⚛️' },
+        { name: 'Angular', level: 55, icon: '🔵' },
         { name: 'Node.js', level: 75, icon: '🟢' },
       ],
     },
@@ -239,7 +229,11 @@ const AboutSection = () => {
       category: 'App Development',
       skills: [
         { name: 'C/C++', level: 95, icon: '💻' },
-        { name: 'Python', level: 80, icon: '🐍' },
+        { name: 'Python', level: 85, icon: '🐍' },
+        { name: 'Rust', level: 65, icon: '🦀' },
+        { name: 'C#', level: 55, icon: '🔵' },
+        { name: 'Java', level: 35, icon: '☕' },
+        { name: 'Flutter', level: 30, icon: '🦋' },
       ],
     },
   ];
@@ -302,25 +296,39 @@ const AboutSection = () => {
 const ProjectsSection = () => {
   const projects = [
     {
-      title: 'Portfolio Website',
-      description: 'A modern, responsive portfolio built with React and advanced CSS animations.',
+      title: 'This Website',
+      description: 'A modern portfolio website showcasing my skills and projects.',
       tech: ['React', 'CSS3', 'JavaScript'],
       status: 'Completed',
-      icon: '🌐'
+      githubLink: 'https://github.com/Zuerelas/zuerelas.github.io'
     },
     {
-      title: 'Task Manager App',
-      description: 'A full-stack task management application with real-time updates.',
-      tech: ['React', 'Node.js', 'MongoDB'],
-      status: 'In Progress',
-      icon: '📋'
-    },
-    {
-      title: 'Weather Dashboard',
-      description: 'Beautiful weather app with location-based forecasts and interactive charts.',
-      tech: ['React', 'APIs', 'Chart.js'],
+      title: 'Suitwalk Linz Website',
+      description: 'A responsive website for Suitwalk Linz, featuring a sleek design and smooth animations. With the feature of registering for the event via Telegram.',
+      tech: ['React', 'Node.js', 'MariaDB', 'Telegram API'],
       status: 'Completed',
-      icon: '🌤️'
+      githubLink: 'https://github.com/Zuerelas/suitwalk-linz-homepage'
+    },
+    {
+      title: 'Suitwalk Linz Database Manager',
+      description: 'A database management tool for Suitwalk Linz, allowing easy access and management of event data.',
+      tech: ['Node.js', 'MariaDB', 'Express'],
+      status: 'Completed',
+      githubLink: 'https://github.com/Zuerelas/SW-DB-Managing'
+    },
+    {
+      title: 'Suitwalk Linz backend',
+      description: 'The backend service for Suitwalk Linz, handling all server-side logic and database interactions.',
+      tech: ['Node.js', 'Express', 'MariaDB'],
+      status: 'Completed',
+      githubLink: 'https://github.com/Zuerelas/suitwalk-linz-backend'
+    },
+    {
+      title: 'VidQ Game',
+      description: 'A fun and interactive game i made for a school project, where you have to answer questions while watching a video.',
+      tech: ['JavaScript', 'HTML5', 'CSS3'],
+      status: 'Completed',
+      githubLink: 'https://github.com/Xandll/video-quiz'
     }
   ];
 
@@ -336,9 +344,6 @@ const ProjectsSection = () => {
                     className="project-card glass-card"
                     style={{ animationDelay: `${index * 0.2}s` }}
                 >
-                  <div className="project-image">
-                    <span className="project-icon">{project.icon}</span>
-                  </div>
 
                   <div className="project-content">
                     <div className="project-header">
@@ -357,11 +362,7 @@ const ProjectsSection = () => {
                     </div>
 
                     <div className="project-links">
-                      <a href="#" className="project-link">
-                        <ExternalLink size={16} />
-                        Live Demo
-                      </a>
-                      <a href="#" className="project-link">
+                      <a href={project.githubLink} target="_blank" className="project-link">
                         <Github size={16} />
                         Code
                       </a>
@@ -386,13 +387,13 @@ const Footer = () => {
           </div>
 
           <div className="social-links">
-            <a href="#" className="social-link">
+            <a href="https://github.com/Zuerelas" className="social-link">
               <Github size={24} />
             </a>
-            <a href="#" className="social-link">
+            <a href="https://www.linkedin.com/in/elias-p%C3%B6schl-888220351/" className="social-link">
               <Linkedin size={24} />
             </a>
-            <a href="#" className="social-link">
+            <a href="mailto:eliaspoe194@gmail.com" className="social-link">
               <Mail size={24} />
             </a>
           </div>
